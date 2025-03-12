@@ -18,19 +18,19 @@ public class CustomHttpClient {
      * Отправляет запрос на https://httpbin.org/get и извлекает из него значение Host
      */
     public void getHost() throws IOException, InterruptedException {
-        try (HttpClient client = HttpClient.newHttpClient()) {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://httpbin.org/get"))
-                    .build();
+        HttpClient client = HttpClient.newHttpClient();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://httpbin.org/get"))
+                .build();
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(response.body());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            String host = jsonNode.get("headers").get("Host").asText();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(response.body());
 
-            System.out.println("Host: " + host);
-        }
+        String host = jsonNode.get("headers").get("Host").asText();
+
+        System.out.println("Host: " + host);
     }
 }
